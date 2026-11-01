@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_authors}"
+  ],
+  "license": "${mod_license}",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.pyrostudios.notsosimplevoicechat.NotSoSimpleVoiceChatClient"
+    ],
+    "voicechat": [
+      "dev.pyrostudios.notsosimplevoicechat.voice.NotSoSimpleVoiceChatPlugin"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "${minecraft_version}",
+    "java": ">=${java_version}",
+    "fabric-api": "*",
+    "voicechat_api": ">=${voicechat_api_version}"
+  }
+}

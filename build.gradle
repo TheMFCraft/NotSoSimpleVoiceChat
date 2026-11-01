@@ -1,0 +1,91 @@
+plugins {
+    id "net.fabricmc.fabric-loom" version "${loom_version}"
+    id "maven-publish"
+}
+
+version = "${mod_version}+${minecraft_version}"
+group = maven_group
+
+repositories {
+    maven { url = "https://maven.maxhenkel.de/repository/public" }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+
+    implementation "de.maxhenkel.voicechat:voicechat-api:${voicechat_api_version}"
+
+    localRuntime "maven.modrinth:simple-voice-chat:${voicechat_version}"
+    localRuntime "de.maxhenkel.voicechat:voicechat-api:${voicechat_api_version}:fabric-stub"
+
+    testImplementation platform("org.junit:junit-bom:5.11.4")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.toVersion(java_version)
+    targetCompatibility = JavaVersion.toVersion(java_version)
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(java_version)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = Integer.parseInt(java_version)
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
+
+loom {
+    runs {
+        client {
+            programArgs "--username", "Dev"
+        }
+    }
+}
+
+processResources {
+    def props = [
+            version               : project.version,
+            mod_id                : mod_id,
+            mod_name              : mod_name,
+            mod_description       : mod_description,
+            mod_authors           : mod_authors,
+            mod_license           : mod_license,
+            minecraft_version     : minecraft_version,
+            java_version          : java_version,
+            fabric_loader_version : fabric_loader_version,
+            voicechat_api_version : voicechat_api_version
+    ]
+    inputs.properties props
+    filesMatching("fabric.mod.json") {
+        expand props
+    }
+}
+
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            from components.java
+        }
+    }
+}
