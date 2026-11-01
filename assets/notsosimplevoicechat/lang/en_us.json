@@ -1,0 +1,13 @@
+{
+  "gui.notsosimplevoicechat.open_settings": "Noise suppression…",
+  "gui.notsosimplevoicechat.settings.title": "NotSoSimple Voice Chat",
+  "gui.notsosimplevoicechat.subtitle": "On-device noise suppression",
+  "gui.notsosimplevoicechat.enabled": "Enhancement enabled",
+  "gui.notsosimplevoicechat.replace_svc": "Replace Simple Voice Chat denoiser",
+  "gui.notsosimplevoicechat.engine": "Engine",
+  "gui.notsosimplevoicechat.engine.deepfilter": "DeepFilterNet3 (ONNX)",
+  "gui.notsosimplevoicechat.engine.rnnoise": "RNNoise",
+  "gui.notsosimplevoicechat.strength": "Filter strength: %s%%",
+  "gui.notsosimplevoicechat.engine_note": "DeepFilter model downloads once to config (~16 MB).",
+  "gui.notsosimplevoicechat.save": "Save"
+}

@@ -1,0 +1,13 @@
+{
+  "gui.notsosimplevoicechat.open_settings": "Rauschunterdrückung…",
+  "gui.notsosimplevoicechat.settings.title": "NotSoSimple Voice Chat",
+  "gui.notsosimplevoicechat.subtitle": "Lokale Rauschunterdrückung",
+  "gui.notsosimplevoicechat.enabled": "Verbesserung aktiv",
+  "gui.notsosimplevoicechat.replace_svc": "SVC-Rauschfilter ersetzen",
+  "gui.notsosimplevoicechat.engine": "Engine",
+  "gui.notsosimplevoicechat.engine.deepfilter": "DeepFilterNet3 (ONNX)",
+  "gui.notsosimplevoicechat.engine.rnnoise": "RNNoise",
+  "gui.notsosimplevoicechat.strength": "Filterstärke: %s%%",
+  "gui.notsosimplevoicechat.engine_note": "DeepFilter-Modell wird einmalig in config geladen (~16 MB).",
+  "gui.notsosimplevoicechat.save": "Speichern"
+}

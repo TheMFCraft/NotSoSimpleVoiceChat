@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "notsosimplevoicechat",
+  "version": "0.1.0+26.3",
+  "name": "NotSoSimple Voice Chat",
+  "description": "Simple Voice Chat addon with improved on-device noise suppression for the microphone pipeline.",
+  "authors": [
+    "PyroStudios"
+  ],
+  "license": "MIT",
+  "environment": "client",
+  "mixins": [
+    "notsosimplevoicechat.mixins.json"
+  ],
+  "entrypoints": {
+    "client": [
+      "dev.pyrostudios.notsosimplevoicechat.NotSoSimpleVoiceChatClient"
+    ],
+    "voicechat": [
+      "dev.pyrostudios.notsosimplevoicechat.voice.NotSoSimpleVoiceChatPlugin"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "26.3",
+    "java": ">=25",
+    "fabric-api": "*",
+    "voicechat_api": ">=2.6.27",
+    "voicechat": "*"
+  }
+}
