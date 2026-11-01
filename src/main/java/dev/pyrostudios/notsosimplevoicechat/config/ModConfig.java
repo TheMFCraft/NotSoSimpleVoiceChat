@@ -16,25 +16,40 @@ public final class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static ModConfig INSTANCE = new ModConfig();
 
+    /** Addon-Rauschunterdrückung aktiv. */
     public boolean enabled = true;
+    /** Simple-Voice-Chat-RNNoise deaktivieren, wenn das Addon aktiv ist (empfohlen). */
+    public boolean replaceSvcDenoiser = true;
+    /** Anteil des gefilterten Signals in Prozent (0 = trocken, 100 = nur gefiltert). */
+    public double strengthPercent = 100.0;
+    /** Lokale Engine: DEEPFILTER oder RNNOISE. */
+    public String engine = DenoiseEngine.DEEPFILTER.name();
+
+    /** Legacy (Krisp / alte Config) – wird beim Laden in {@link #strengthPercent} übernommen. */
+    public double suppressionLevel = 100.0;
     public String krispApiKey = "";
     public String krispSessionToken = "";
     public int sessionTokenTtlMinutes = 180;
     public String model = "VIVA-tel";
-    public double suppressionLevel = 100.0;
 
     public static ModConfig get() {
         return INSTANCE;
+    }
+
+    public DenoiseEngine engineEnum() {
+        try {
+            return DenoiseEngine.valueOf(engine == null ? "" : engine.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return DenoiseEngine.DEEPFILTER;
+        }
     }
 
     public static void load() {
         Path path = configPath();
         if (Files.isRegularFile(path)) {
             try (Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-                INSTANCE = GSON.fromJson(reader, ModConfig.class);
-                if (INSTANCE == null) {
-                    INSTANCE = new ModConfig();
-                }
+                ModConfig loaded = GSON.fromJson(reader, ModConfig.class);
+                INSTANCE = loaded == null ? new ModConfig() : migrateLegacy(loaded);
             } catch (IOException e) {
                 NotSoSimpleVoiceChatClient.LOGGER.error("Konfiguration konnte nicht gelesen werden", e);
                 INSTANCE = new ModConfig();
@@ -43,7 +58,16 @@ public final class ModConfig {
             INSTANCE = new ModConfig();
             save();
         }
-        applyEnvironmentOverrides();
+    }
+
+    private static ModConfig migrateLegacy(ModConfig loaded) {
+        if (loaded.strengthPercent <= 0.0 && loaded.suppressionLevel > 0.0) {
+            loaded.strengthPercent = loaded.suppressionLevel;
+        }
+        if (loaded.strengthPercent <= 0.0) {
+            loaded.strengthPercent = 100.0;
+        }
+        return loaded;
     }
 
     public static void save() {
@@ -62,22 +86,10 @@ public final class ModConfig {
         return FabricLoader.getInstance().getConfigDir().resolve("notsosimplevoicechat.json");
     }
 
-    public String resolveApiKey() {
-        String env = System.getenv("KRISP_API_KEY");
-        if (env != null && !env.isBlank()) {
-            return env.trim();
-        }
-        return krispApiKey == null ? "" : krispApiKey.trim();
-    }
-
-    public String resolveSessionToken() {
-        return krispSessionToken == null ? "" : krispSessionToken.trim();
-    }
-
-    private static void applyEnvironmentOverrides() {
-        String envToken = System.getenv("KRISP_SESSION_TOKEN");
-        if (envToken != null && !envToken.isBlank()) {
-            INSTANCE.krispSessionToken = envToken.trim();
-        }
+    public static void applyFromDraft(ModConfig draft) {
+        INSTANCE.enabled = draft.enabled;
+        INSTANCE.replaceSvcDenoiser = draft.replaceSvcDenoiser;
+        INSTANCE.strengthPercent = draft.strengthPercent;
+        INSTANCE.engine = draft.engine == null ? DenoiseEngine.DEEPFILTER.name() : draft.engine;
     }
 }

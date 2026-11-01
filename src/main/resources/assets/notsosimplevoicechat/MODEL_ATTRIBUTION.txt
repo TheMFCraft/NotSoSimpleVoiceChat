@@ -1,0 +1,9 @@
+DeepFilterNet ONNX model (denoiser_model.onnx)
+
+Source: https://github.com/yuyun2000/SpeechDenoiser (48k/denoiser_model.onnx)
+Upstream: DeepFilterNet3 — https://github.com/Rikorose/DeepFilterNet
+
+The mod downloads this file on first use to config/notsosimplevoicechat/denoiser_model.onnx
+and verifies SHA-256: fe5eb64fa2e4154c83f8e4935e82871c850c154387ee892e0ab65fe179e7d8c9
+
+Not bundled in the mod JAR to keep release size small.

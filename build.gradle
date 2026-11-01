@@ -28,6 +28,9 @@ dependencies {
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
     implementation "de.maxhenkel.voicechat:voicechat-api:${voicechat_api_version}"
+    implementation "de.maxhenkel.rnnoise4j:rnnoise4j:${rnnoise4j_version}"
+    implementation "com.microsoft.onnxruntime:onnxruntime:${onnxruntime_version}"
+    compileOnly "maven.modrinth:simple-voice-chat:${voicechat_version}"
 
     localRuntime "maven.modrinth:simple-voice-chat:${voicechat_version}"
     localRuntime "de.maxhenkel.voicechat:voicechat-api:${voicechat_api_version}:fabric-stub"

@@ -1,29 +1,30 @@
 # NotSoSimple Voice Chat
 
-Fabric-Addon für [Simple Voice Chat](https://modrinth.com/mod/simple-voice-chat) (Minecraft 26.3), das die Rauschunterdrückung über **Krisp Voice Isolation** (Streaming-API) verbessert.
+Fabric-Addon für [Simple Voice Chat](https://modrinth.com/mod/simple-voice-chat) (Minecraft 26.3): **lokale** Mikrofon-Rauschunterdrückung ohne Cloud.
 
-## Voraussetzungen
+## Engines
 
-- Simple Voice Chat 2.6.27+ für 26.3
-- Krisp Developers Portal API-Key mit **Voice Isolation (`viva`)**-Produkt
+| Engine | Technik | Standard |
+|--------|---------|----------|
+| **DeepFilterNet3** | ONNX @ 48 kHz, 10 ms-Hops, stateful Streaming | Ja |
+| **RNNoise** | JNI (wie SVC) | Fallback |
 
-## Konfiguration
+Beim ersten Start mit **DeepFilterNet** wird das ONNX-Modell (~16 MB) nach  
+`config/notsosimplevoicechat/denoiser_model.onnx` geladen (SHA-256-geprüft).  
+Modell-Quelle: [SpeechDenoiser](https://github.com/yuyun2000/SpeechDenoiser) / [DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) (MIT/Apache-2.0).
 
-Datei: `config/notsosimplevoicechat.json` (wird beim ersten Start angelegt)
+## Einstellungen
 
-| Feld | Beschreibung |
-|------|----------------|
-| `krispApiKey` | Master API-Key (optional, wenn `krispSessionToken` gesetzt) |
-| `krispSessionToken` | Fertiger Session-Token (Alternative zum API-Key) |
-| `enabled` | Krisp-Verarbeitung ein/aus |
-| `suppressionLevel` | 0–100 (Krisp `suppression_level`) |
-| `model` | Standard: `VIVA-tel` |
+**Im Spiel:** `V` → **Einstellungen** (Simple Voice Chat) → **„Rauschunterdrückung…“**
 
-**Empfehlung:** RNNoise in den Simple-Voice-Chat-Einstellungen deaktivieren, wenn Krisp aktiv ist (sonst doppelte Filterung).
-
-Umgebungsvariable `KRISP_API_KEY` überschreibt `krispApiKey` in der Config.
+- Verbesserung aktiv  
+- SVC-Rauschfilter ersetzen (empfohlen)  
+- Engine: DeepFilterNet3 oder RNNoise  
+- Filterstärke 0–100 %
 
 ## Entwicklung
+
+Optional Modell für Offline-Dev nach `run/models/denoiser_model.onnx` legen (wird sonst automatisch in `config/` kopiert/heruntergeladen).
 
 ```bash
 ./gradlew runClient
@@ -31,4 +32,4 @@ Umgebungsvariable `KRISP_API_KEY` überschreibt `krispApiKey` in der Config.
 
 ## Lizenz
 
-MIT
+MIT (siehe `LICENSE`). ONNX-Modell und DeepFilterNet unter deren Lizenzen.

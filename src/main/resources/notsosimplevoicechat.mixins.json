@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.pyrostudios.notsosimplevoicechat.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "ScreenWidgetAccessor",
+    "MicrophoneProcessorMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

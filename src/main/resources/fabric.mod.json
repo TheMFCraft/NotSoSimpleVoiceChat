@@ -9,6 +9,9 @@
   ],
   "license": "${mod_license}",
   "environment": "client",
+  "mixins": [
+    "notsosimplevoicechat.mixins.json"
+  ],
   "entrypoints": {
     "client": [
       "dev.pyrostudios.notsosimplevoicechat.NotSoSimpleVoiceChatClient"
@@ -22,6 +25,7 @@
     "minecraft": "${minecraft_version}",
     "java": ">=${java_version}",
     "fabric-api": "*",
-    "voicechat_api": ">=${voicechat_api_version}"
+    "voicechat_api": ">=${voicechat_api_version}",
+    "voicechat": "*"
   }
 }
