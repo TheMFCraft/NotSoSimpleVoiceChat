@@ -32,3 +32,6 @@ gradle-app.setting
 /idea_run_config_template.xml
 /log4j2.fabric.xml
 /mod_compile_template.pom
+
+# Lokales Publish-Skript (persönlicher Workflow)
+/publish.sh
